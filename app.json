@@ -1,0 +1,33 @@
+{
+  "expo": {
+    "name": "BIT240045_foodmanager",
+    "slug": "bit240045-foodmanager",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.bit240045.foodmanager"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E7F0EA",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "package": "com.bit240045.foodmanager"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-sqlite",
+      "expo-image"
+    ],
+    "scheme": "bit240045foodmanager"
+  }
+}
