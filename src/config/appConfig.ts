@@ -19,7 +19,7 @@
  */
 export const STUDENT_ID = 'BIT240045';
 
-export const MOCKAPI_BASE_URL = 'https://YOUR_PROJECT_ID.mockapi.io/api/v1';
+export const MOCKAPI_BASE_URL = 'https://6ad74ddd95e98f36aef24400.mockapi.io/apt/v1';
 
 /**
  * Tên 2 resource tạo trên MockAPI (đóng vai trò 2 "bảng" phía server), cũng mang tiền tố MSSV

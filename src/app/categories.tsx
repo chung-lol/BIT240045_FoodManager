@@ -138,7 +138,7 @@ export default function CategoriesScreen() {
 }
 
 const styles = StyleSheet.create({
-  list: { padding: space.lg },
+  list: { width: '100%', maxWidth: 960, alignSelf: 'center', padding: space.lg },
   row: {
     flexDirection: 'row',
     alignItems: 'center',

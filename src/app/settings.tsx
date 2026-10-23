@@ -75,7 +75,7 @@ export default function SettingsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { padding: space.lg, gap: space.lg },
+  container: { width: '100%', maxWidth: 900, alignSelf: 'center', padding: space.lg, gap: space.lg },
   row: { flexDirection: 'row', gap: space.sm },
   kv: { gap: 2 },
 });

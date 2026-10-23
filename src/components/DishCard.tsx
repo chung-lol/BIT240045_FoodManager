@@ -18,7 +18,7 @@ function DishCardBase({ dish, onPress }: { dish: DishListItem; onPress: () => vo
   return (
     <Pressable
       onPress={onPress}
-      style={({ pressed }) => [styles.card, pressed && { opacity: 0.85 }]}
+      style={({ pressed }) => [styles.card, pressed && styles.cardPressed]}
       accessibilityRole="button"
       accessibilityLabel={dish.name}
     >
@@ -59,7 +59,14 @@ const styles = StyleSheet.create({
     gap: space.md,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.line,
+    minHeight: 122,
+    shadowColor: '#173D2B',
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 3 },
+    elevation: 1,
   },
+  cardPressed: { opacity: 0.86, transform: [{ scale: 0.995 }] },
   thumb: { width: 104, height: 104, borderRadius: radius.md, overflow: 'hidden' },
   body: { flex: 1, gap: 3, paddingVertical: 2, paddingRight: 4 },
   titleRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },

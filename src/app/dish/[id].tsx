@@ -156,7 +156,7 @@ function InfoRow({ label, value, strong }: { label: string; value: string; stron
 }
 
 const styles = StyleSheet.create({
-  container: { padding: space.lg, gap: space.md, paddingBottom: 48 },
+  container: { width: '100%', maxWidth: 900, alignSelf: 'center', padding: space.lg, gap: space.md, paddingBottom: 48 },
   hero: { width: '100%', aspectRatio: 4 / 3, borderRadius: radius.lg, overflow: 'hidden' },
   strip: { gap: space.sm },
   stripItem: { borderRadius: radius.sm, borderWidth: 2, borderColor: 'transparent', overflow: 'hidden' },

@@ -120,7 +120,7 @@ export default function DatabaseScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { padding: space.lg, gap: space.lg, paddingBottom: 48 },
+  container: { width: '100%', maxWidth: 960, alignSelf: 'center', padding: space.lg, gap: space.lg, paddingBottom: 48 },
   badges: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
   table: {
     backgroundColor: colors.surface,

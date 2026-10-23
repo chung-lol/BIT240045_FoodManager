@@ -215,7 +215,7 @@ export function DishForm({
 }
 
 const styles = StyleSheet.create({
-  container: { padding: space.lg, gap: space.lg, paddingBottom: 48 },
+  container: { width: '100%', maxWidth: 900, alignSelf: 'center', padding: space.lg, gap: space.lg, paddingBottom: 48 },
   twoCol: { flexDirection: 'row', gap: space.md },
   switchRow: {
     flexDirection: 'row',

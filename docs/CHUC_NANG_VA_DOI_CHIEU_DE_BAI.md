@@ -1,6 +1,6 @@
 # Đối chiếu đề bài và giải thích chức năng BIT240045 FoodManager
 
-Tài liệu này dùng để kiểm tra mức độ đáp ứng đề giữa kỳ và làm dàn ý thuyết minh mã nguồn cho Video 2. Kết luận: phần mã nguồn đã đáp ứng toàn bộ nhóm chức năng cơ bản và đã triển khai đầy đủ logic nâng cao offline-first; 45/45 bài kiểm thử logic đang đạt. Tuy nhiên, để có thể demo và nộp trọn vẹn, vẫn phải thay URL MockAPI mẫu bằng URL thật, tạo đúng hai resource trên MockAPI, đẩy mã nguồn lên Git và quay hai video theo yêu cầu.
+Tài liệu này dùng để kiểm tra mức độ đáp ứng đề giữa kỳ và làm dàn ý thuyết minh mã nguồn cho Video 2. Kết luận: phần mã nguồn đã đáp ứng toàn bộ nhóm chức năng cơ bản và đã triển khai đầy đủ logic nâng cao offline-first; 45/45 bài kiểm thử logic đang đạt. MockAPI thật và hai resource đã được cấu hình; các việc còn lại trước khi nộp là đẩy mã nguồn lên Git và quay hai video theo yêu cầu.
 
 # 1. Kết luận đối chiếu nhanh
 
@@ -22,7 +22,7 @@ Tài liệu này dùng để kiểm tra mức độ đáp ứng đề giữa k�
 | English mặc định và chuyển English ↔ Tiếng Việt | Đạt | `src/i18n/*`, `languageStore`; lựa chọn được lưu SQLite |
 | Lưu khi offline | Đạt về implementation và test | UI luôn ghi SQLite trước; test TC19/20 và SYNC03–05 |
 | Tự đồng bộ khi có mạng, không tạo bản ghi trùng | Đạt về implementation và test | `useNetworkSync`, `syncScheduler`, `syncEngine`; test SYNC01–11 |
-| MockAPI thật để demo nâng cao | Chưa sẵn sàng | `MOCKAPI_BASE_URL` vẫn là `YOUR_PROJECT_ID` |
+| MockAPI thật để demo nâng cao | Đạt | Endpoint `/apt/v1`; hai resource `BIT240045_DishCategory` và `BIT240045_Dish` |
 | Link Git để nộp | Chưa sẵn sàng | Repository hiện chưa cấu hình Git remote |
 | Video 1 và Video 2 | Chưa thể xác minh trong mã nguồn | Cần quay và nộp bên ngoài project |
 
@@ -516,20 +516,20 @@ Nhóm test bao phủ schema và tiền tố, seed, validation, CRUD, khoá ngo�
 
 ## 21.1 Cấu hình MockAPI thật
 
-Tạo hai resource:
+Hai resource đã được tạo:
 
 ```text
 BIT240045_DishCategory
 BIT240045_Dish
 ```
 
-Sau đó thay dòng sau trong `src/config/appConfig.ts`:
+Endpoint đang được cấu hình trong `src/config/appConfig.ts`:
 
 ```ts
-export const MOCKAPI_BASE_URL = 'https://YOUR_PROJECT_ID.mockapi.io/api/v1';
+export const MOCKAPI_BASE_URL = 'https://6ad74ddd95e98f36aef24400.mockapi.io/apt/v1';
 ```
 
-bằng URL project thật. Khi URL còn là mẫu, app vẫn chạy offline/local nhưng không thể chứng minh 1,0 điểm tự động đồng bộ với MockAPI.
+Trước khi quay video, mở hai resource trên MockAPI để xác nhận dữ liệu seed đã được tự động đẩy lên và không có bản ghi trùng.
 
 ## 21.2 Tạo repository Git để nộp
 

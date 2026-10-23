@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { router, Stack } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
-import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ConfigWarning } from '@/components/ConfigWarning';
 import { DishCard } from '@/components/DishCard';
@@ -26,6 +26,9 @@ import { colors, radius, space, type } from '@/theme/tokens';
 export default function DishListScreen() {
   const t = useT();
   const insets = useSafeAreaInsets();
+  const { width } = useWindowDimensions();
+  const isDesktop = width >= 900;
+  const columns = isDesktop ? 2 : 1;
   const version = useDataStore((s) => s.version);
   const filters = useFilterStore((s) => s.filters);
   const setFilter = useFilterStore((s) => s.setFilter);
@@ -64,6 +67,15 @@ export default function DishListScreen() {
 
   const header = (
     <View style={styles.header}>
+      {isDesktop ? (
+        <View style={styles.desktopTitleRow}>
+          <View style={styles.desktopTitleCopy}>
+            <Text style={styles.desktopTitle}>{t('dishes')}</Text>
+            <Text style={type.small}>{t('resultsCount', { count: items.length, total: dishes.length })}</Text>
+          </View>
+          <Button title={t('addDish')} icon="add" onPress={() => router.push('/dish/new')} />
+        </View>
+      ) : null}
       <ConfigWarning />
       <SyncStatusBar />
       <View style={styles.searchRow}>
@@ -96,7 +108,7 @@ export default function DishListScreen() {
       </View>
       {panelOpen ? <DishFilters categories={categories} priceError={priceError} /> : null}
       {!panelOpen && priceError ? <Text style={styles.inlineError}>{t(priceError.key, priceError.params)}</Text> : null}
-      <Text style={type.small}>{t('resultsCount', { count: items.length, total: dishes.length })}</Text>
+      {!isDesktop ? <Text style={type.small}>{t('resultsCount', { count: items.length, total: dishes.length })}</Text> : null}
     </View>
   );
 
@@ -107,16 +119,44 @@ export default function DishListScreen() {
           title: t('appTitle'),
           headerRight: () => (
             <View style={styles.headerActions}>
-              <IconButton icon="pricetags-outline" label={t('categories')} onPress={() => router.push('/categories')} />
-              <IconButton icon="settings-outline" label={t('settings')} onPress={() => router.push('/settings')} />
+              {isDesktop ? (
+                <>
+                  <Button
+                    title={t('categories')}
+                    icon="pricetags-outline"
+                    variant="ghost"
+                    style={styles.desktopNavButton}
+                    onPress={() => router.push('/categories')}
+                  />
+                  <Button
+                    title={t('settings')}
+                    icon="settings-outline"
+                    variant="ghost"
+                    style={styles.desktopNavButton}
+                    onPress={() => router.push('/settings')}
+                  />
+                </>
+              ) : (
+                <>
+                  <IconButton icon="pricetags-outline" label={t('categories')} onPress={() => router.push('/categories')} />
+                  <IconButton icon="settings-outline" label={t('settings')} onPress={() => router.push('/settings')} />
+                </>
+              )}
             </View>
           ),
         }}
       />
       <FlatList
+        key={`dish-grid-${columns}`}
         data={items}
+        numColumns={columns}
+        columnWrapperStyle={isDesktop ? styles.gridRow : undefined}
         keyExtractor={(d) => d.id}
-        renderItem={({ item }) => <DishCard dish={item} onPress={() => router.push(`/dish/${item.id}`)} />}
+        renderItem={({ item }) => (
+          <View style={[styles.cardCell, isDesktop && styles.cardCellDesktop]}>
+            <DishCard dish={item} onPress={() => router.push(`/dish/${item.id}`)} />
+          </View>
+        )}
         ListHeaderComponent={header}
         ItemSeparatorComponent={() => <View style={{ height: space.sm }} />}
         ListEmptyComponent={
@@ -135,25 +175,46 @@ export default function DishListScreen() {
         contentContainerStyle={[styles.list, { paddingBottom: insets.bottom + 96 }]}
         keyboardShouldPersistTaps="handled"
       />
-      <Pressable
-        onPress={() => router.push('/dish/new')}
-        style={({ pressed }) => [styles.fab, { bottom: insets.bottom + 20 }, pressed && { opacity: 0.85 }]}
-        accessibilityRole="button"
-        accessibilityLabel={t('addDish')}
-        testID="add-dish"
-      >
-        <Ionicons name="add" size={22} color="#FFFFFF" />
-        <Text style={styles.fabText}>{t('addDish')}</Text>
-      </Pressable>
+      {!isDesktop ? (
+        <Pressable
+          onPress={() => router.push('/dish/new')}
+          style={({ pressed }) => [styles.fab, { bottom: insets.bottom + 20 }, pressed && { opacity: 0.85 }]}
+          accessibilityRole="button"
+          accessibilityLabel={t('addDish')}
+          testID="add-dish"
+        >
+          <Ionicons name="add" size={22} color="#FFFFFF" />
+          <Text style={styles.fabText}>{t('addDish')}</Text>
+        </Pressable>
+      ) : null}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.bg },
-  list: { paddingHorizontal: space.lg, paddingTop: space.sm },
-  header: { gap: space.md, marginBottom: space.md },
-  headerActions: { flexDirection: 'row', gap: space.md },
+  list: {
+    width: '100%',
+    maxWidth: 1280,
+    alignSelf: 'center',
+    paddingHorizontal: space.xl,
+    paddingTop: space.lg,
+  },
+  header: { gap: space.md, marginBottom: space.lg },
+  headerActions: { flexDirection: 'row', alignItems: 'center', gap: space.xs },
+  desktopNavButton: { minHeight: 36, paddingHorizontal: space.md },
+  desktopTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: space.lg,
+    paddingBottom: space.xs,
+  },
+  desktopTitleCopy: { gap: space.xs },
+  desktopTitle: { fontSize: 28, lineHeight: 34, fontWeight: '800', color: colors.ink, letterSpacing: -0.5 },
+  gridRow: { gap: space.md },
+  cardCell: { marginBottom: space.md },
+  cardCellDesktop: { flex: 1, minWidth: 0 },
   searchRow: { flexDirection: 'row', gap: space.sm },
   searchBox: { flex: 1, justifyContent: 'center' },
   searchIcon: { position: 'absolute', left: 12, zIndex: 1 },
