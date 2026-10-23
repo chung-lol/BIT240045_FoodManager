@@ -9,7 +9,7 @@ Tài liệu này dùng để kiểm tra mức độ đáp ứng đề giữa k�
 | React Native hoặc công nghệ mobile hợp lệ | Đạt | React Native, Expo SDK 58 và TypeScript trong `package.json` |
 | Tên project theo `{MSSV}_FoodManager` | Đạt trong cấu hình app | `app.json` dùng `BIT240045_FoodManager`; tên package npm viết thường theo quy ước npm |
 | Hai model `DishCategory`, `Dish` và danh sách ảnh | Đạt | `src/models/index.ts` |
-| Tối thiểu 3 loại và 5 món | Đạt | `src/database/seed.ts`; test DB03 |
+| Tối thiểu 3 loại và 5 món | Đạt vượt yêu cầu: 3 loại và 15 món | `src/database/seed.ts`; test DB03 |
 | Bảng và trường có tiền tố `BIT240045_` | Đạt | `src/database/schema.ts`; test DB01; màn Database Inspector |
 | Danh sách, chi tiết, thêm, sửa, xoá có xác nhận | Đạt | `src/app/index.tsx`, `src/app/dish/*` |
 | Chọn loại món từ dữ liệu lưu trữ | Đạt | `src/components/CategoryPicker.tsx` |
@@ -128,7 +128,7 @@ Kết quả thực tế là các tên như `BIT240045_Dish`, `BIT240045_Name` v�
 
 # 5. Dữ liệu mẫu
 
-`src/database/seed.ts` khai báo đúng 3 danh mục và 5 món. Dữ liệu có cả món đang bán, ngừng bán, Quick, Regular, nhiều ảnh và không có ảnh để phục vụ demo đầy đủ.
+`src/database/seed.ts` khai báo 3 danh mục và 15 món (10 món ăn, 5 đồ uống), vượt mức tối thiểu của đề. Mỗi món có ảnh phù hợp với tên; dữ liệu có cả món đang bán, ngừng bán, Quick và Regular để phục vụ demo đầy đủ.
 
 ```ts
 const CATEGORIES = [

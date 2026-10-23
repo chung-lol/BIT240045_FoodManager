@@ -100,11 +100,11 @@ async function main() {
     assert(report.foreignKeysEnabled, 'foreign_keys OFF');
   });
 
-  await test('DB03 Seed đúng 3 danh mục / 5 món và KHÔNG seed lại lần 2', async () => {
+  await test('DB03 Seed đúng 3 danh mục / 15 món và KHÔNG seed lại lần 2', async () => {
     const again = await seedIfNeeded();
     eq(again, false, 'seed lần 2');
     eq((await getCategories()).length, 3, 'số danh mục');
-    eq((await getAllDishes()).length, 5, 'số món');
+    eq((await getAllDishes()).length, 15, 'số món');
   });
 
   await test('DB04 SQLite tự chặn Price <= 0 (CHECK) kể cả khi bỏ qua service', async () => {
@@ -459,7 +459,10 @@ async function main() {
   });
 
   await test('SYNC11 Danh mục mẫu đã xoá trên server không sống lại sau khi cài lại app', async () => {
-    // "Drinks" lúc này không còn món nào (Lemon Tea đã bị xoá ở SYNC04)
+    // Xoá toàn bộ đồ uống còn lại để danh mục Drinks trở thành danh mục rỗng.
+    const drinks = (await getAllDishes()).filter((d) => d.dishCategoryId === 'seed-cat-drink');
+    for (const drink of drinks) await deleteDish(drink.id);
+    await runSyncOnce();
     await deleteCategory('seed-cat-drink');
     await runSyncOnce();
     eq(api.all(R.categories).filter((c) => c[COLS.id] === 'seed-cat-drink').length, 0, 'server đã xoá');

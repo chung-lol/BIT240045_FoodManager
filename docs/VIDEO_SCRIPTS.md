@@ -9,7 +9,7 @@ Thời lượng chỉ là gợi ý; đề không quy định số phút. Quay m�
 **Chuẩn bị trước khi bấm quay**
 - Bản APK `preview` đã cài (hoặc Expo Go đã mở sẵn và tải xong ảnh).
 - Dashboard MockAPI mở ở resource `{MSSV}_Dish`.
-- App đang ở tiếng Anh, bộ lọc đã Reset, dữ liệu đúng 5 món mẫu (nếu cần, xoá dữ liệu app rồi mở lại có mạng).
+- App đang ở tiếng Anh, bộ lọc đã Reset, dữ liệu đúng 15 món mẫu với ảnh đúng món (seed cũ tự nâng cấp, không cần xoá dữ liệu app).
 
 | # | Thao tác | Lời nói gợi ý |
 |---|---|---|

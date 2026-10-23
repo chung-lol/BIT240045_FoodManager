@@ -43,7 +43,7 @@ Cột **Tự động** ghi tên test trong `tests/logic.test.ts` (chạy `npm ru
 |---|---|---|---|---|---|
 | DB01 | Tiền tố MSSV | Settings → Inspect database | Badge xanh "All … prefixed", mọi tên có `{MSSV}_` | DB01 | |
 | DB02 | Foreign key bật | Như trên | `PRAGMA foreign_keys = ON` | DB02 | |
-| DB03 | Seed một lần | Đóng/mở app 3 lần | Vẫn 3 danh mục / 5 món ban đầu | DB03 | |
+| DB03 | Seed có version | Đóng/mở app 3 lần | Vẫn 3 danh mục / 15 món ban đầu, không tạo trùng | DB03 | |
 | DB04–05 | Ràng buộc ở tầng SQLite | (bằng test) | CHECK và FK chặn dữ liệu sai kể cả khi bỏ qua service | DB04, DB05 | — |
 | PERSIST | Dữ liệu còn sau khi tắt app | Thêm món → vuốt tắt app → mở lại | Món vẫn còn | — | |
 
@@ -51,7 +51,7 @@ Cột **Tự động** ghi tên test trong `tests/logic.test.ts` (chạy `npm ru
 
 | ID | Tình huống | Thao tác | Kết quả mong đợi | Tự động | Tay |
 |---|---|---|---|---|---|
-| SYNC01 | Đồng bộ lần đầu | Cấu hình MockAPI, mở app có mạng | Thanh trạng thái "Online · All synced"; dashboard MockAPI có 3 + 5 bản ghi | SYNC01 | |
+| SYNC01 | Đồng bộ lần đầu | Cấu hình MockAPI, mở app có mạng | Thanh trạng thái "Online · All synced"; dashboard MockAPI có 3 danh mục + 15 món | SYNC01 | |
 | SYNC02 | Không trùng khi sync lặp | Kéo app ra nền rồi mở lại vài lần | Số bản ghi trên MockAPI không đổi | SYNC02 | |
 | TC19 | Thêm món khi offline | Bật chế độ máy bay → thêm "Offline Soup" | Lưu ngay, thanh trạng thái "Offline · 1 pending", icon đám mây cam trên thẻ món | TC19/20 | |
 | TC19b | Offline + tắt app | (APK) Tắt app khi offline → mở lại | Món vẫn còn, vẫn pending | — | |

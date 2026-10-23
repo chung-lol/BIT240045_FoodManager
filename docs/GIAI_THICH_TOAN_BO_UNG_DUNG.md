@@ -167,7 +167,7 @@ await useLanguageStore.getState().loadLanguage();
 Ý nghĩa:
 
 1. `getDb()` mở SQLite và chạy migration.
-2. `seedIfNeeded()` thêm 3 loại và 5 món mẫu đúng một lần.
+2. `seedIfNeeded()` tạo hoặc nâng cấp dữ liệu mẫu lên 3 loại và 15 món.
 3. `loadLanguage()` đọc ngôn ngữ đã lưu.
 
 Chỉ khi ba bước thành công, Router và giao diện chính mới được render. Nếu lỗi, app hiển thị lỗi và nút Retry thay vì crash.
@@ -431,7 +431,7 @@ export function writeTransaction<T>(task: (db: Db) => Promise<T>) {
 
 File: `src/database/seed.ts`.
 
-Project có 3 danh mục và 5 món:
+Project có 3 danh mục và 15 món, gồm 10 món ăn và 5 đồ uống. Mỗi món dùng URL ảnh đúng chủ thể thay cho ảnh ngẫu nhiên:
 
 - Main Dishes
 - Appetizers
@@ -441,11 +441,21 @@ Project có 3 danh mục và 5 món:
 - Spring Rolls
 - French Fries
 - Lemon Tea
+- Margherita Pizza
+- Beef Burger
+- Spaghetti Bolognese
+- Sushi Platter
+- Grilled Salmon
+- Iced Coffee
+- Orange Juice
+- Caesar Salad
+- Milk Tea
+- Coconut Water
 
-Seed chỉ chạy một lần:
+Seed có version. Bản mới là version `2`; nếu máy đã từng chạy bản 5 món (version `1`), app tự thêm các món còn thiếu và cập nhật ảnh cho seed chưa bị người dùng sửa:
 
 ```ts
-if ((await getSetting(db, SETTING_KEYS.seedDone)) === '1') {
+if ((await getSetting(db, SETTING_KEYS.seedDone)) === SEED_VERSION) {
   return false;
 }
 ```
@@ -1062,7 +1072,31 @@ Ví dụ khi offline:
 
 ---
 
-# 23. Kết nối MockAPI
+# 23. Kết nối và vai trò của MockAPI
+
+## 23.1 MockAPI có vai trò gì?
+
+MockAPI đóng vai trò **máy chủ REST từ xa** của ứng dụng. Nó giúp dữ liệu không chỉ tồn tại trên một thiết bị và cung cấp nơi để giảng viên quan sát kết quả đồng bộ qua dashboard.
+
+| Vai trò | Cách ứng dụng sử dụng |
+|---|---|
+| Lưu bản sao dữ liệu từ xa | Hai resource `BIT240045_DishCategory` và `BIT240045_Dish` |
+| Nhận dữ liệu local | POST món mới, PUT món sửa, DELETE món đã xoá |
+| Cấp dữ liệu cho thiết bị | GET rồi merge dữ liệu server về SQLite |
+| Chứng minh phần nâng cao | Có thể demo tắt mạng → sửa local → bật mạng → dashboard tự cập nhật |
+| Đồng bộ giữa nhiều lần cài/thiết bị | Cùng business ID giúp nhận diện cùng một món |
+
+MockAPI **không phải nguồn dữ liệu mà UI đọc trực tiếp** và cũng không thay thế SQLite. Nếu app gọi MockAPI cho từng màn hình thì khi mất mạng danh sách và nút Lưu sẽ không hoạt động. Thiết kế hiện tại phân vai như sau:
+
+```text
+SQLite = nguồn dữ liệu trực tiếp, luôn dùng được offline
+MockAPI = bản dữ liệu từ xa để đồng bộ, sao lưu và demo REST API
+Sync Engine = cầu nối hai chiều giữa SQLite và MockAPI
+```
+
+Vì vậy, khi MockAPI tạm lỗi, dữ liệu người dùng vẫn được giữ trong SQLite dưới trạng thái `pending`; Scheduler sẽ tự thử lại sau. Khi sync thành công, trạng thái chuyển thành `synced`.
+
+## 23.2 Cách kết nối
 
 HTTP client: `src/api/mockApiClient.ts`.
 
@@ -1386,7 +1420,7 @@ Logic test hiện bao phủ schema, seed, validation, CRUD, FK, thumbnail, Quick
 | React Native | Expo + React Native trong `package.json` |
 | Tên project có MSSV | `app.json` |
 | 2 model chính | `src/models/index.ts` |
-| 3 loại, 5 món | `src/database/seed.ts` |
+| Tối thiểu 3 loại, 5 món | Có 3 loại, 15 món trong `src/database/seed.ts` |
 | Table/field có tiền tố | `src/database/schema.ts` |
 | Danh sách/chi tiết/thêm/sửa/xoá | `src/app` + `dishService.ts` |
 | Chọn loại từ dữ liệu lưu | `CategoryPicker.tsx` |
