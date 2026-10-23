@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "BIT240045_foodmanager",
+    "name": "BIT240045_FoodManager",
     "slug": "bit240045-foodmanager",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -24,7 +24,15 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-router",
+      [
+        "expo-router",
+        {
+          "headers": {
+            "Cross-Origin-Embedder-Policy": "credentialless",
+            "Cross-Origin-Opener-Policy": "same-origin"
+          }
+        }
+      ],
       "expo-sqlite",
       "expo-image"
     ],

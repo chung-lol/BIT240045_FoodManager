@@ -1,4 +1,4 @@
-# BIT240045_foodmanager — Food Manager (Quản lý món ăn)
+# BIT240045_FoodManager — Food Manager (Quản lý món ăn)
 
 Ứng dụng di động quản lý món ăn cho bài kiểm tra giữa kỳ môn Phát triển ứng dụng di động.
 **React Native + Expo SDK 58 + TypeScript + SQLite (offline-first) + MockAPI (đồng bộ tự động).**
